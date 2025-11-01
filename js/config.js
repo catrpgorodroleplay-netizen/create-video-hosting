@@ -1,48 +1,29 @@
 // Конфигурация приложения CREATE Video Hosting
 const CONFIG = {
-    // Invidious instances для поиска видео
+    // Актуальные рабочие Invidious instances
     invidiousInstances: [
-        'https://iv.ggtyler.dev',
-        'https://inv.riverside.rocks', 
-        'https://yewtu.be',
-        'https://invidious.snopyta.org',
-        'https://invidious.osi.kr'
+        'https://inv.odyssey346.dev',
+        'https://invidious.private.coffee',
+        'https://yt.artemislena.eu',
+        'https://invidious.flokinet.to',
+        'https://inv.nadeko.net'
     ],
     
     // Инстанс по умолчанию
-    defaultInstance: 'https://iv.ggtyler.dev',
+    defaultInstance: 'https://inv.odyssey346.dev',
     
     // Настройки поиска
     maxResults: 20,
-    cacheDuration: 60 * 60 * 1000, // 1 час кэширования
+    cacheDuration: 60 * 60 * 1000,
     
     // Категории видео
     categories: {
-        music: 'Музыка',
-        gaming: 'Игры',
-        education: 'Образование',
-        comedy: 'Комедия',
-        sports: 'Спорт',
-        news: 'Новости',
-        tech: 'Технологии',
-        film: 'Фильмы',
-        animation: 'Анимация',
-        automotive: 'Авто'
-    },
-    
-    // Настройки плеера
-    player: {
-        autoplay: true,
-        controls: true,
-        modestbranding: true,
-        rel: false, // Не показывать related videos
-        showinfo: false
-    },
-    
-    // Настройки UI
-    ui: {
-        theme: 'dark',
-        language: 'ru',
-        defaultQuality: 'medium'
+        music: 'music',
+        gaming: 'gaming',
+        education: 'education',
+        comedy: 'comedy',
+        sports: 'sports',
+        news: 'news',
+        tech: 'technology'
     }
 };
