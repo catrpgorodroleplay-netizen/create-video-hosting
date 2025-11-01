@@ -1,22 +1,19 @@
-// Конфигурация приложения CREATE Video Hosting
+// Конфигурация с Piped API
 const CONFIG = {
-    // Актуальные рабочие Invidious instances
-    invidiousInstances: [
-        'https://inv.odyssey346.dev',
-        'https://invidious.private.coffee',
-        'https://yt.artemislena.eu',
-        'https://invidious.flokinet.to',
-        'https://inv.nadeko.net'
+    // Стабильные Piped instances
+    pipedInstances: [
+        'https://pipedapi.kavin.rocks',
+        'https://pipedapi.moomoo.me', 
+        'https://pipedapi-libre.kavin.rocks',
+        'https://piped-api.garudalinux.org'
     ],
     
-    // Инстанс по умолчанию
-    defaultInstance: 'https://inv.odyssey346.dev',
+    defaultInstance: 'https://pipedapi.kavin.rocks',
     
-    // Настройки поиска
+    // Настройки
     maxResults: 20,
-    cacheDuration: 60 * 60 * 1000,
     
-    // Категории видео
+    // Категории для поиска
     categories: {
         music: 'music',
         gaming: 'gaming',
@@ -24,6 +21,8 @@ const CONFIG = {
         comedy: 'comedy',
         sports: 'sports',
         news: 'news',
-        tech: 'technology'
+        tech: 'technology',
+        film: 'movies',
+        animation: 'animation'
     }
 };
