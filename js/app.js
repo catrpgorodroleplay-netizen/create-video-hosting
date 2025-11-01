@@ -1,15 +1,11 @@
 class CreateApp {
     constructor() {
         this.currentVideos = [];
-        this.currentCategory = 'all';
-        this.searchQuery = '';
-        this.isLoading = false;
-        
         this.init();
     }
 
     async init() {
-        console.log('🚀 Инициализация CREATE Video Hosting');
+        console.log('🚀 CREATE Video Hosting запущен');
         this.setupEventListeners();
         await this.loadTrendingVideos();
     }
@@ -17,42 +13,34 @@ class CreateApp {
     setupEventListeners() {
         // Поиск по Enter
         document.getElementById('searchInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                this.performSearch();
-            }
+            if (e.key === 'Enter') this.performSearch();
         });
 
-        // Закрытие модальных окон
+        // Закрытие модального окна
         document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal')) {
-                this.closeVideo();
-            }
+            if (e.target.classList.contains('modal')) this.closeVideo();
         });
     }
 
-    // Загрузка трендовых видео
+    // Загрузка трендов
     async loadTrendingVideos() {
         try {
             this.showLoading();
-            this.currentVideos = await invidiousAPI.getTrending();
+            this.currentVideos = await pipedAPI.getTrending();
             this.displayVideos(this.currentVideos);
         } catch (error) {
-            this.showError('Ошибка загрузки трендов: ' + error.message);
+            this.showError('Ошибка загрузки: ' + error.message);
         }
     }
 
     // Поиск видео
     async performSearch() {
         const query = document.getElementById('searchInput').value.trim();
-        if (!query) {
-            await this.loadTrendingVideos();
-            return;
-        }
+        if (!query) return await this.loadTrendingVideos();
 
         try {
             this.showLoading();
-            this.searchQuery = query;
-            this.currentVideos = await invidiousAPI.searchVideos(query);
+            this.currentVideos = await pipedAPI.searchVideos(query);
             this.displayVideos(this.currentVideos);
         } catch (error) {
             this.showError('Ошибка поиска: ' + error.message);
@@ -63,21 +51,18 @@ class CreateApp {
     async loadCategory(category) {
         try {
             this.showLoading();
-            this.currentCategory = category;
             const categoryName = CONFIG.categories[category] || category;
-            this.currentVideos = await invidiousAPI.searchVideos(categoryName);
+            this.currentVideos = await pipedAPI.searchVideos(categoryName);
             this.displayVideos(this.currentVideos);
-            this.updateActiveCategory(category);
         } catch (error) {
-            this.showError('Ошибка загрузки категории: ' + error.message);
+            this.showError('Ошибка категории: ' + error.message);
         }
     }
 
     // Открытие видео
-    async openVideo(videoId, title = '', channel = '', views = 0) {
+    async openVideo(videoId, title = '', channel = '') {
         try {
-            // Получаем детальную информацию о видео
-            const videoInfo = await invidiousAPI.getVideoInfo(videoId);
+            const videoInfo = await pipedAPI.getVideoInfo(videoId);
             
             // Создаем плеер
             videoPlayer.createPlayer(videoId);
@@ -87,13 +72,13 @@ class CreateApp {
             document.getElementById('videoViewsModal').textContent = this.formatNumber(videoInfo.views) + ' просмотров';
             document.getElementById('videoLikesModal').textContent = this.formatNumber(videoInfo.likes) + ' лайков';
             document.getElementById('channelNameModal').textContent = videoInfo.channel;
-            document.getElementById('channelAvatarModal').textContent = videoInfo.channel ? videoInfo.channel.charAt(0).toUpperCase() : 'C';
+            document.getElementById('channelAvatarModal').textContent = videoInfo.channel.charAt(0).toUpperCase();
             
             // Показываем модальное окно
             document.getElementById('videoModal').style.display = 'block';
             
         } catch (error) {
-            alert('Ошибка загрузки видео: ' + error.message);
+            alert('Ошибка загрузки видео');
         }
     }
 
@@ -103,7 +88,7 @@ class CreateApp {
         videoPlayer.stopVideo();
     }
 
-    // Отображение видео в сетке
+    // Отображение видео
     displayVideos(videos) {
         const grid = document.getElementById('videosGrid');
         
@@ -113,19 +98,17 @@ class CreateApp {
         }
 
         grid.innerHTML = videos.map(video => `
-            <div class="video-card" onclick="app.openVideo('${video.id}', '${this.escapeHtml(video.title)}', '${this.escapeHtml(video.channel)}', ${video.views})">
+            <div class="video-card" onclick="app.openVideo('${video.id}', '${this.escapeHtml(video.title)}', '${this.escapeHtml(video.channel)}')">
                 <div class="thumbnail">
-                    <img src="${video.thumbnail}" 
-                         alt="${video.title}"
-                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDMyMCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iMTgwIiBmaWxsPSIjMjcyNzI3Ii8+Cjx0ZXh0IHg9IjE2MCIgeT0iOTAiIGZpbGw9IiM2NjYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UFJFVklFVzwvdGV4dD4KPC9zdmc+'">
+                    <img src="${video.thumbnail}" alt="${video.title}">
                     <div class="duration">${video.duration}</div>
                 </div>
                 <div class="video-info">
-                    <div class="channel-avatar">${video.channel ? video.channel.charAt(0).toUpperCase() : 'C'}</div>
+                    <div class="channel-avatar">${video.channel.charAt(0).toUpperCase()}</div>
                     <div class="video-details">
                         <div class="video-title">${video.title}</div>
                         <div class="channel-name">${video.channel}</div>
-                        <div class="video-meta">${this.formatNumber(video.views)} просмотров • ${video.published}</div>
+                        <div class="video-meta">${this.formatNumber(video.views)} просмотров</div>
                     </div>
                 </div>
             </div>
@@ -143,28 +126,15 @@ class CreateApp {
 
     formatNumber(num) {
         if (!num) return '0';
-        if (num >= 1000000) {
-            return (num / 1000000).toFixed(1) + 'M';
-        } else if (num >= 1000) {
-            return (num / 1000).toFixed(1) + 'K';
-        }
-        return num.toString();
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+        return num;
     }
 
     escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
-    }
-
-    updateActiveCategory(category) {
-        // Обновляем активные кнопки категорий
-        document.querySelectorAll('.category-filter').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.querySelectorAll('.sidebar-item').forEach(item => {
-            item.classList.remove('active');
-        });
     }
 
     // Публичные методы для HTML
@@ -177,9 +147,9 @@ class CreateApp {
     }
 
     showUploadForm() {
-        alert('Функция добавления видео в разработке');
+        alert('Добавление видео в разработке');
     }
 }
 
-// Инициализация приложения
+// Запуск приложения
 const app = new CreateApp();
