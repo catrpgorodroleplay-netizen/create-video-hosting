@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREATE - Видео Хостинг</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo" onclick="app.loadHomePage()">CREATE</div>
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Поиск видео...">
+            <button class="search-button" onclick="app.performSearch()">🔍</button>
+        </div>
+        <div class="header-actions">
+            <button class="upload-btn" onclick="app.showUploadForm()">📹 Добавить</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-item active" onclick="app.loadHomePage()">
+                <div class="sidebar-icon">🏠</div>
+                <span>Главная</span>
+            </div>
+            <div class="sidebar-item" onclick="app.loadTrending()">
+                <div class="sidebar-icon">🔥</div>
+                <span>Популярное</span>
+            </div>
+            <div class="sidebar-item" onclick="app.loadCategory('music')">
+                <div class="sidebar-icon">🎵</div>
+                <span>Музыка</span>
+            </div>
+            <div class="sidebar-item" onclick="app.loadCategory('gaming')">
+                <div class="sidebar-icon">🎮</div>
+                <span>Игры</span>
+            </div>
+            <div class="sidebar-item" onclick="app.loadCategory('education')">
+                <div class="sidebar-icon">📚</div>
+                <span>Образование</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="category-filters">
+                <button class="category-filter active" onclick="app.loadHomePage()">Все</button>
+                <button class="category-filter" onclick="app.loadCategory('music')">Музыка</button>
+                <button class="category-filter" onclick="app.loadCategory('gaming')">Игры</button>
+                <button class="category-filter" onclick="app.loadCategory('education')">Образование</button>
+                <button class="category-filter" onclick="app.loadCategory('comedy')">Комедия</button>
+                <button class="category-filter" onclick="app.loadCategory('sports')">Спорт</button>
+            </div>
+
+            <div class="videos-grid" id="videosGrid">
+                <div class="loading">Загрузка популярных видео...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно видео -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="app.closeVideo()">&times;</span>
+            <div id="videoPlayer"></div>
+            <div class="video-info-modal">
+                <h2 id="videoTitleModal"></h2>
+                <div class="video-stats">
+                    <span id="videoViewsModal"></span>
+                    <span id="videoLikesModal"></span>
+                </div>
+                <div class="channel-info">
+                    <div class="channel-avatar-modal" id="channelAvatarModal"></div>
+                    <div class="channel-details">
+                        <div class="channel-name" id="channelNameModal"></div>
+                        <button class="subscribe-btn">Подписаться</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/invidious.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/app.js"></script>
+</body>
+      </html>
