@@ -6,7 +6,6 @@ class CreatePlayer {
         this.loadYouTubeAPI();
     }
 
-    // Загрузка YouTube IFrame API
     loadYouTubeAPI() {
         if (this.isYouTubeAPILoaded) return;
 
@@ -21,22 +20,18 @@ class CreatePlayer {
         };
     }
 
-    // Создание плеера
     createPlayer(videoId, elementId = 'videoPlayer') {
         if (!this.isYouTubeAPILoaded) {
-            console.log('⚠️ YouTube API еще не загружен');
             setTimeout(() => this.createPlayer(videoId, elementId), 100);
             return;
         }
 
         this.currentVideoId = videoId;
 
-        // Удаляем старый плеер если есть
         if (this.player) {
             this.player.destroy();
         }
 
-        // Создаем новый плеер
         this.player = new YT.Player(elementId, {
             height: '100%',
             width: '100%',
@@ -76,52 +71,18 @@ class CreatePlayer {
         console.error('❌ Ошибка плеера:', event.data);
     }
 
-    // Воспроизведение видео
     playVideo() {
-        if (this.player) {
-            this.player.playVideo();
-        }
+        if (this.player) this.player.playVideo();
     }
 
-    // Пауза
     pauseVideo() {
-        if (this.player) {
-            this.player.pauseVideo();
-        }
+        if (this.player) this.player.pauseVideo();
     }
 
-    // Остановка
     stopVideo() {
-        if (this.player) {
-            this.player.stopVideo();
-        }
+        if (this.player) this.player.stopVideo();
     }
 
-    // Установка громкости
-    setVolume(volume) {
-        if (this.player) {
-            this.player.setVolume(volume);
-        }
-    }
-
-    // Получение длительности
-    getDuration() {
-        return this.player ? this.player.getDuration() : 0;
-    }
-
-    // Получение текущего времени
-    getCurrentTime() {
-        return this.player ? this.player.getCurrentTime() : 0;
-    }
-
-    // Перемотка
-    seekTo(seconds) {
-        if (this.player) {
-            this.player.seekTo(seconds, true);
-        }
-    }
-
-    // Уничтожение плеера
     destroy() {
         if (this.player) {
             this.player.destroy();
@@ -130,5 +91,4 @@ class CreatePlayer {
     }
 }
 
-// Создаем глобальный экземпляр плеера
 const videoPlayer = new CreatePlayer();
